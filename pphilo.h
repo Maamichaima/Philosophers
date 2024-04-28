@@ -6,7 +6,7 @@
 /*   By: cmaami <cmaami@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 14:59:11 by cmaami            #+#    #+#             */
-/*   Updated: 2024/04/25 18:49:03 by cmaami           ###   ########.fr       */
+/*   Updated: 2024/04/27 21:15:51 by cmaami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_data
 	int				wach_mat;
 	pthread_mutex_t	lock_wach_mat;
 	size_t			daba;
+	pthread_mutex_t print;
 }					t_data;
 
 typedef struct s_philo
@@ -40,6 +41,7 @@ typedef struct s_philo
 	pthread_mutex_t	*right;
 	pthread_mutex_t	mutex_last_time_eat;
 	size_t			last_time_eat;
+	int				compt_n_o_t_eat;
 	t_data			*data;
 }					t_philo;
 
@@ -51,5 +53,6 @@ void				is_thinking(t_philo *philo);
 void				*thread_routine(void *data);
 int					corpse_check(t_data data);
 void				print(char c, t_philo philosopher);
+int					was_not_satisfied(t_philo philo);
 
 #endif
