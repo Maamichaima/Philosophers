@@ -6,7 +6,7 @@
 /*   By: cmaami <cmaami@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 15:01:14 by cmaami            #+#    #+#             */
-/*   Updated: 2024/04/28 15:36:58 by cmaami           ###   ########.fr       */
+/*   Updated: 2024/04/30 17:24:59 by cmaami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,111 +31,83 @@ int	ft_usleep(size_t milliseconds, t_data data)
 	return (0);
 }
 
-int	was_not_satisfied(t_philo philo)
+void	*routine_one_philo(void *data)
 {
-	if (philo.data->number_of_times_each_philosopher_must_eat == -1)
-		return (1);
-	if (philo.compt_n_o_t_eat < philo.data->number_of_times_each_philosopher_must_eat)
-		return (1);
-	return (0);
+	t_philo	*philo;
+
+	philo = (t_philo *)data;
+	philo->data->daba = get_current_time();
+	pthread_mutex_lock(philo->right);
+	printf("%zu %d has taken a fork \n", get_current_time() - philo->data->daba,
+		philo->index);
+	ft_usleep(philo->data->time_to_die, *(philo->data));
+	pthread_mutex_unlock(philo->right);
+	printf("\e[31m%zu %d died\e[0m \n", get_current_time() - philo->data->daba,
+		philo->index);
+	return (NULL);
 }
 
-int	safi_chbe3o(t_philo *philosopher)
+t_philo	*init_program(t_data *data, char **v, int c)
 {
-	int	i;
-
-	i = 0;
-	while (i < philosopher[0].data->num_philosophers)
-	{
-		if (was_not_satisfied(philosopher[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int check_last_time_eat(t_philo *philosopher)
-{
-	pthread_mutex_lock(&philosopher->mutex_last_time_eat);
-	if (!(philosopher->last_time_eat > 0))
-	{
-		pthread_mutex_unlock(&philosopher->mutex_last_time_eat);
-		return 0;
-	}
-	else
-	{
-		pthread_mutex_unlock(&philosopher->mutex_last_time_eat);
-		return 1;
-	}
-	pthread_mutex_unlock(&philosopher->mutex_last_time_eat);
-}
-
-void	monitor(t_philo *philosopher)
-{
-	int	i;
-
-	i = 0;
-	while (!safi_chbe3o(philosopher))
-	{
-		while (i < philosopher[0].data->num_philosophers && check_last_time_eat(&philosopher[i]))
-		{
-			pthread_mutex_lock(&philosopher[i].mutex_last_time_eat);
-			if ((get_current_time()
-					- philosopher[i].last_time_eat) > (unsigned long)philosopher[i].data->time_to_die)
-			{
-				pthread_mutex_lock(&philosopher[i].data->lock_wach_mat);
-				philosopher[i].data->wach_mat = 1;
-				pthread_mutex_unlock(&philosopher[i].data->lock_wach_mat);
-				print('d', philosopher[i]);
-				i = 0;
-				pthread_mutex_unlock(&philosopher[i].mutex_last_time_eat);
-				break ;
-			}
-			pthread_mutex_unlock(&philosopher[i].mutex_last_time_eat);
-			i++;
-		}
-		if (corpse_check(*(philosopher[0].data)))
-			break ;
-		i = 0;
-	}
-}
-
-t_philo	*inisialiser_chaque_philo(t_data data)
-{
-	int		i;
 	t_philo	*p;
+	int		i;
 
 	i = 0;
-	p = malloc(sizeof(t_philo) * data.num_philosophers);
-	if (!p)
-		return (NULL);
-	while (i < data.num_philosophers)
+	*data = inisialiser_data(v, c);
+	while (i < data->num_philosophers)
 	{
-		p[i].data = &data;
-		p[i].index = i + 1;
-		p[i].right = &data.forks[i];
-		p[i].left = &data.forks[(i + 1) % data.num_philosophers];
-		pthread_mutex_init(&p[i].mutex_last_time_eat, NULL);
-		p[i].compt_n_o_t_eat = 0;
+		pthread_mutex_init(&data->forks[i], NULL);
 		i++;
 	}
+	p = inisialiser_chaque_philo(data);
 	return (p);
 }
 
-void	inisialiser_data(t_data *data, char **v, int c)
+int	create_threads(t_philo *p, t_data data)
 {
-	data->num_philosophers = atoi(v[1]);
-	data->time_to_die = atoi(v[2]);
-	data->time_to_eat = atoi(v[3]);
-	data->time_to_sleep = atoi(v[4]);
-	if (c == 6)
-		data->number_of_times_each_philosopher_must_eat = atoi(v[5]);
+	int	i;
+
+	if (data.num_philosophers == 1)
+	{
+		pthread_create(&(p->id), NULL, routine_one_philo, &(p[0]));
+		pthread_join((p->id), NULL);
+		pthread_mutex_destroy(p->right);
+		return (1);
+	}
 	else
-		data->number_of_times_each_philosopher_must_eat = -1;
-	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_philosophers);
-	data->wach_mat = 0;
-	pthread_mutex_init(&data->lock_wach_mat, NULL);
-	data->daba = get_current_time();
+	{
+		i = 0;
+		p->data->daba = get_current_time();
+		while (i < data.num_philosophers)
+		{
+			pthread_create(&(p[i].id), NULL, thread_routine, &(p[i]));
+			i++;
+		}
+		monitor(p);
+		return (0);
+	}
+}
+
+int	check_args(int c, char **v)
+{
+	int	i;
+	int	num;
+
+	num = 0;
+	i = 0;
+	v++;
+	if (c == 5 || c == 6)
+	{
+		while (i < c - 1)
+		{
+			num = ft_atoi(v[i]);
+			if (num <= 0 || num > 2147483647)
+				return (0);
+			i++;
+		}
+		return (1);
+	}
+	return (0);
 }
 
 int	main(int c, char **v)
@@ -144,22 +116,13 @@ int	main(int c, char **v)
 	int		i;
 	t_data	data;
 
-	p = NULL;
 	i = 0;
-	inisialiser_data(&data, v, c);
-	while (i < data.num_philosophers)
-	{
-		pthread_mutex_init(&data.forks[i], NULL);
-		i++;
-	}
-	p = inisialiser_chaque_philo(data);
-	i = 0;
-	while (i < data.num_philosophers)
-	{
-		pthread_create(&(p[i].id), NULL, thread_routine, &(p[i]));
-		i++;
-	}
-	monitor(p);
+	// if check --> retrn 0
+	if (!check_args(c, v))
+		return (0);
+	p = init_program(&data, v, c);
+	if (create_threads(p, data))
+		return (0);
 	i = 0;
 	while (i < data.num_philosophers)
 	{

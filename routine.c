@@ -6,7 +6,7 @@
 /*   By: cmaami <cmaami@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 14:47:34 by cmaami            #+#    #+#             */
-/*   Updated: 2024/04/27 22:00:39 by cmaami           ###   ########.fr       */
+/*   Updated: 2024/04/30 12:56:54 by cmaami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	print(char c, t_philo philosopher)
 {
 	pthread_mutex_lock(&philosopher.data->print);
 	if (c == 't' && !corpse_check(*(philosopher.data)))
-		printf("\e[31m%zu %d is thinking\e[0m\n", get_current_time()
+		printf("\e[35m%zu %d is thinking\e[0m\n", get_current_time()
 			- philosopher.data->daba, philosopher.index);
 	else if (c == 's' && !corpse_check(*(philosopher.data)))
 		printf("\e[33m%zu %d is sleeping\e[0m\n", get_current_time()
@@ -30,8 +30,9 @@ void	print(char c, t_philo philosopher)
 	else if (c == 'e' && !corpse_check(*(philosopher.data)))
 		printf("\e[32m%zu %d is eating\e[0m \n", get_current_time()
 			- philosopher.data->daba, philosopher.index);
-	else if (c == 'd' && corpse_check(*(philosopher.data)))
-		printf("\e[32m%zu %d died\e[0m \n", get_current_time()
+	else if (c == 'd' && corpse_check(*(philosopher.data))) //
+		&& safi_chbe3o(&philosopher))
+		printf("\e[31m%zu %d died\e[0m \n", get_current_time()
 			- philosopher.data->daba, philosopher.index);
 	pthread_mutex_unlock(&philosopher.data->print);
 }
@@ -56,7 +57,8 @@ void	*thread_routine(void *data)
 	pthread_mutex_unlock(&philosopher->mutex_last_time_eat);
 	if (philosopher->index % 2 == 0)
 		ft_usleep(60, *(philosopher->data));
-	while (!corpse_check(*(philosopher->data)) && was_not_satisfied(*philosopher))
+	while (!corpse_check(*(philosopher->data))
+		&& was_not_satisfied(*philosopher))
 	{
 		is_eating(philosopher);
 		is_sleeping(philosopher);

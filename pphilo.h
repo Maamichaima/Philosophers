@@ -6,12 +6,12 @@
 /*   By: cmaami <cmaami@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 14:59:11 by cmaami            #+#    #+#             */
-/*   Updated: 2024/04/27 21:15:51 by cmaami           ###   ########.fr       */
+/*   Updated: 2024/04/30 17:14:34 by cmaami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PPHILO_H
+# define PPHILO_H
 
 # include <pthread.h>
 # include <stdio.h>
@@ -30,7 +30,7 @@ typedef struct s_data
 	int				wach_mat;
 	pthread_mutex_t	lock_wach_mat;
 	size_t			daba;
-	pthread_mutex_t print;
+	pthread_mutex_t	print;
 }					t_data;
 
 typedef struct s_philo
@@ -54,5 +54,13 @@ void				*thread_routine(void *data);
 int					corpse_check(t_data data);
 void				print(char c, t_philo philosopher);
 int					was_not_satisfied(t_philo philo);
+t_philo				*inisialiser_chaque_philo(t_data *data);
+t_data				inisialiser_data(char **v, int c);
+int					check_someone_died(t_philo *philosopher);
+int					check_last_time_eat(t_philo *philosopher);
+int					safi_chbe3o(t_philo *philosopher);
+int					was_not_satisfied(t_philo philo);
+void				monitor(t_philo *philosopher);
+int					ft_atoi(char *str);
 
 #endif
