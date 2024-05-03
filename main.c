@@ -6,7 +6,7 @@
 /*   By: cmaami <cmaami@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 15:01:14 by cmaami            #+#    #+#             */
-/*   Updated: 2024/04/30 17:24:59 by cmaami           ###   ########.fr       */
+/*   Updated: 2024/05/02 19:50:01 by cmaami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ size_t	get_current_time(void)
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-int	ft_usleep(size_t milliseconds, t_data data)
+int	ft_usleep(size_t milliseconds, t_data *data)
 {
 	size_t	start;
 
@@ -31,23 +31,21 @@ int	ft_usleep(size_t milliseconds, t_data data)
 	return (0);
 }
 
-void	*routine_one_philo(void *data)
+void *routine_one_philo(void *data)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
 	philo->data->daba = get_current_time();
 	pthread_mutex_lock(philo->right);
-	printf("%zu %d has taken a fork \n", get_current_time() - philo->data->daba,
-		philo->index);
-	ft_usleep(philo->data->time_to_die, *(philo->data));
+	printf("%zu %d has taken a fork \n", get_current_time() - philo->data->daba, philo->index);
+	ft_usleep(philo->data->time_to_die, (philo->data));
 	pthread_mutex_unlock(philo->right);
-	printf("\e[31m%zu %d died\e[0m \n", get_current_time() - philo->data->daba,
-		philo->index);
-	return (NULL);
+	printf("\e[31m%zu %d died\e[0m \n", get_current_time() - philo->data->daba, philo->index);
+	return NULL;
 }
 
-t_philo	*init_program(t_data *data, char **v, int c)
+t_philo *init_program(t_data *data, char **v, int c)
 {
 	t_philo	*p;
 	int		i;
@@ -63,11 +61,11 @@ t_philo	*init_program(t_data *data, char **v, int c)
 	return (p);
 }
 
-int	create_threads(t_philo *p, t_data data)
+int create_threads(t_philo *p, t_data data)
 {
-	int	i;
-
-	if (data.num_philosophers == 1)
+	int i;
+	
+	if(data.num_philosophers == 1)
 	{
 		pthread_create(&(p->id), NULL, routine_one_philo, &(p[0]));
 		pthread_join((p->id), NULL);
@@ -88,26 +86,25 @@ int	create_threads(t_philo *p, t_data data)
 	}
 }
 
-int	check_args(int c, char **v)
+int check_args(int c, char **v)
 {
-	int	i;
-	int	num;
-
-	num = 0;
+	int i;
+	int num = 0;
+	
 	i = 0;
 	v++;
-	if (c == 5 || c == 6)
+	if(c == 5 || c == 6)
 	{
-		while (i < c - 1)
+		while(i < c - 1)
 		{
 			num = ft_atoi(v[i]);
-			if (num <= 0 || num > 2147483647)
-				return (0);
+			if(num <= 0 || num >= 2147483647)
+				return 0;
 			i++;
 		}
-		return (1);
+		return 1;
 	}
-	return (0);
+	return 0;
 }
 
 int	main(int c, char **v)
@@ -117,12 +114,11 @@ int	main(int c, char **v)
 	t_data	data;
 
 	i = 0;
-	// if check --> retrn 0
-	if (!check_args(c, v))
-		return (0);
+	if(!check_args(c, v))
+		return 0;
 	p = init_program(&data, v, c);
 	if (create_threads(p, data))
-		return (0);
+		return 0;
 	i = 0;
 	while (i < data.num_philosophers)
 	{

@@ -6,7 +6,7 @@
 /*   By: cmaami <cmaami@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 14:42:53 by cmaami            #+#    #+#             */
-/*   Updated: 2024/04/25 17:42:56 by cmaami           ###   ########.fr       */
+/*   Updated: 2024/05/02 19:48:33 by cmaami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 void	is_thinking(t_philo *philo)
 {
-	print('t', *philo);
+	print('t', philo);
 }

@@ -6,7 +6,7 @@
 /*   By: cmaami <cmaami@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:22:46 by cmaami            #+#    #+#             */
-/*   Updated: 2024/04/30 14:09:16 by cmaami           ###   ########.fr       */
+/*   Updated: 2024/05/02 19:40:47 by cmaami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ int	check_last_time_eat(t_philo *philosopher)
 int	check_someone_died(t_philo *philosopher)
 {
 	pthread_mutex_lock(&philosopher->mutex_last_time_eat);
-	if ((get_current_time()
-			- philosopher->last_time_eat) > (unsigned long)philosopher->data->time_to_die)
+	if ((get_current_time() - philosopher->last_time_eat) > (unsigned long)philosopher->data->time_to_die)
 	{
+		// pthread_mutex_lock(&philo);
 		pthread_mutex_lock(&philosopher->data->lock_wach_mat);
 		philosopher->data->wach_mat = 1;
 		pthread_mutex_unlock(&philosopher->data->lock_wach_mat);
@@ -64,7 +64,7 @@ int	check_someone_died(t_philo *philosopher)
 
 int	was_not_satisfied(t_philo philo)
 {
-	// looock
+	//looock
 	if (philo.data->number_of_times_each_philosopher_must_eat == -1)
 		return (1);
 	if (philo.compt_n_o_t_eat < philo.data->number_of_times_each_philosopher_must_eat)

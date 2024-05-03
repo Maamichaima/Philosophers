@@ -6,7 +6,7 @@
 /*   By: cmaami <cmaami@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 14:59:11 by cmaami            #+#    #+#             */
-/*   Updated: 2024/04/30 17:14:34 by cmaami           ###   ########.fr       */
+/*   Updated: 2024/05/03 10:04:29 by cmaami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,21 +46,20 @@ typedef struct s_philo
 }					t_philo;
 
 void				is_eating(t_philo *philosopher);
-int					ft_usleep(size_t milliseconds, t_data data);
+int					ft_usleep(size_t milliseconds, t_data *data);
 size_t				get_current_time(void);
 void				is_sleeping(t_philo *philo);
 void				is_thinking(t_philo *philo);
 void				*thread_routine(void *data);
-int					corpse_check(t_data data);
-void				print(char c, t_philo philosopher);
+int					corpse_check(t_data *data);
+void				print(char c, t_philo *philosopher);
 int					was_not_satisfied(t_philo philo);
 t_philo				*inisialiser_chaque_philo(t_data *data);
 t_data				inisialiser_data(char **v, int c);
 int					check_someone_died(t_philo *philosopher);
 int					check_last_time_eat(t_philo *philosopher);
 int					safi_chbe3o(t_philo *philosopher);
-int					was_not_satisfied(t_philo philo);
 void				monitor(t_philo *philosopher);
-int					ft_atoi(char *str);
+int					ft_atoi(char *str);	
 
 #endif
