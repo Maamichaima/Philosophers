@@ -21,10 +21,7 @@ void	print(char c, t_philo *philosopher)
 	else if (c == 's' && !corpse_check(philosopher->data))
 		printf("\e[33m%zu %d is sleeping\e[0m\n", get_current_time()
 			- philosopher->data->daba, philosopher->index);
-	else if (c == 'r' && !corpse_check(philosopher->data))
-		printf("%zu %d has taken a fork \n", get_current_time()
-			- philosopher->data->daba, philosopher->index);
-	else if (c == 'l' && !corpse_check(philosopher->data))
+	else if (c == 'f' && !corpse_check(philosopher->data))
 		printf("%zu %d has taken a fork \n", get_current_time()
 			- philosopher->data->daba, philosopher->index);
 	else if (c == 'e' && !corpse_check(philosopher->data))
@@ -62,5 +59,21 @@ void	*thread_routine(void *data)
 		is_sleeping(philosopher);
 		is_thinking(philosopher);
 	}
+	return (NULL);
+}
+
+void	*routine_one_philo(void *data)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)data;
+	philo->data->daba = get_current_time();
+	pthread_mutex_lock(philo->right);
+	printf("%zu %d has taken a fork \n", get_current_time() - philo->data->daba,
+		philo->index);
+	ft_usleep(philo->data->time_to_die, (philo->data)); // time to eat
+	pthread_mutex_unlock(philo->right);
+	printf("\e[31m%zu %d died\e[0m \n", get_current_time() - philo->data->daba,
+		philo->index);
 	return (NULL);
 }

@@ -60,6 +60,11 @@ int					check_someone_died(t_philo *philosopher);
 int					check_last_time_eat(t_philo *philosopher);
 int					safi_chbe3o(t_philo *philosopher);
 void				monitor(t_philo *philosopher);
-int					ft_atoi(char *str);	
+int					ft_atoi(char *str);
+void				ft_free(t_philo *philosopher);
+t_philo				*init_program(t_data *data, char **v, int c);
+int					check_args(int c, char **v);
+void				*routine_one_philo(void *data);
+int					create_threads(t_philo *p, t_data data);
 
 #endif

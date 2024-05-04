@@ -45,9 +45,9 @@ int	check_last_time_eat(t_philo *philosopher)
 int	check_someone_died(t_philo *philosopher)
 {
 	pthread_mutex_lock(&philosopher->mutex_last_time_eat);
-	if ((get_current_time() - philosopher->last_time_eat) > (unsigned long)philosopher->data->time_to_die)
+	if ((get_current_time()
+			- philosopher->last_time_eat) > (unsigned long)philosopher->data->time_to_die)
 	{
-		// pthread_mutex_lock(&philo);
 		pthread_mutex_lock(&philosopher->data->lock_wach_mat);
 		philosopher->data->wach_mat = 1;
 		pthread_mutex_unlock(&philosopher->data->lock_wach_mat);
@@ -64,10 +64,32 @@ int	check_someone_died(t_philo *philosopher)
 
 int	was_not_satisfied(t_philo philo)
 {
-	//looock
+	// looock
 	if (philo.data->number_of_times_each_philosopher_must_eat == -1)
 		return (1);
 	if (philo.compt_n_o_t_eat < philo.data->number_of_times_each_philosopher_must_eat)
 		return (1);
+	return (0);
+}
+
+int	check_args(int c, char **v)
+{
+	int	i;
+	int	num;
+
+	num = 0;
+	i = 0;
+	v++;
+	if (c == 5 || c == 6)
+	{
+		while (i < c - 1)
+		{
+			num = ft_atoi(v[i]);
+			if (num <= 0 || num >= 2147483647)
+				return (0);
+			i++;
+		}
+		return (1);
+	}
 	return (0);
 }
