@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_eating.c                                        :+:      :+:    :+:   */
+/*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmaami <cmaami@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 11:30:55 by cmaami            #+#    #+#             */
-/*   Updated: 2024/05/07 14:27:52 by cmaami           ###   ########.fr       */
+/*   Updated: 2024/05/07 21:59:07 by cmaami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,16 @@
 void	print(char c, t_philo *philosopher)
 {
 	sem_wait(philosopher->data->print);
-	if (c == 't')// && !corpse_check(philosopher->data))
+	if (c == 't')
 		printf("\e[35m%zu %d is thinking\e[0m\n", get_current_time()
 			- philosopher->data->daba, philosopher->index);
-	else if (c == 's')// && !corpse_check(philosopher->data))
+	else if (c == 's')
 		printf("\e[33m%zu %d is sleeping\e[0m\n", get_current_time()
 			- philosopher->data->daba, philosopher->index);
-	else if (c == 'f')// && !corpse_check(philosopher->data))
+	else if (c == 'f')
 		printf("%zu %d has taken a fork \n", get_current_time()
 			- philosopher->data->daba, philosopher->index);
-	else if (c == 'e')// && !corpse_check(philosopher->data))
+	else if (c == 'e')
 		printf("\e[32m%zu %d is eating\e[0m \n", get_current_time()
 			- philosopher->data->daba, philosopher->index);
 	else if (c == 'd')
@@ -44,10 +44,37 @@ void	is_eating(t_philo *philosopher)
 	print('f', philosopher);
 	print('e', philosopher);
 	philosopher->compt_n_o_t_eat++; // mutex
-	sem_wait(philosopher->mutex_last_time_eat);
-	philosopher->last_time_eat = get_current_time();
-	sem_post(philosopher->mutex_last_time_eat);
+	gettimeofday(&philosopher->data->last_time_eat, NULL);
 	ft_usleep(philosopher->data->time_to_eat, (philosopher->data));
 	sem_post(philosopher->data->forks);
 	sem_post(philosopher->data->forks);
+}
+
+void	is_thinking(t_philo *philo)
+{
+	print('t', philo);
+}
+
+void	is_sleeping(t_philo *philo)
+{
+	print('s', philo);
+	ft_usleep(philo->data->time_to_sleep, (philo->data));
+}
+
+void	thread_routine(t_philo *philo)
+{
+	sem_wait(philo->mutex_last_time_eat);
+	gettimeofday(&philo->data->last_time_eat, NULL);
+	sem_post(philo->mutex_last_time_eat);
+	if (philo->index % 2 == 0)
+		ft_usleep(60, (philo->data));
+	while (1)
+	{
+		is_eating(philo);
+		if (philo->data->number_of_t_eat != -1
+			&& (philo->compt_n_o_t_eat == philo->data->number_of_t_eat))
+			exit(0);
+		is_sleeping(philo);
+		is_thinking(philo);
+	}
 }

@@ -6,25 +6,26 @@
 /*   By: cmaami <cmaami@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 21:55:46 by cmaami            #+#    #+#             */
-/*   Updated: 2024/05/07 14:27:45 by cmaami           ###   ########.fr       */
+/*   Updated: 2024/05/07 21:36:36 by cmaami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher_bonus.h"
 
-int w9ef(t_philo *philosopher)
+int	w9ef(t_philo *philosopher)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
-	while(i < philosopher[0].data->num_philosophers)
+	while (i < philosopher[0].data->num_philosophers)
 	{
-		if(check_last_time_eat(&philosopher[i]))
-			return 0;
+		if (check_last_time_eat(&philosopher[i]))
+			return (0);
 		i++;
 	}
-	return 1;
+	return (1);
 }
+
 int	corpse_check(t_data *data)
 {
 	int	b;
@@ -34,18 +35,19 @@ int	corpse_check(t_data *data)
 	sem_post(data->lock_wach_mat);
 	return (b);
 }
+
 void	*monitor(void *data)
 {
-	int	i;
+	int		i;
+	t_philo	*philosopher;
 
 	i = 0;
-	t_philo *philosopher;
-	philosopher = (t_philo *) data;
+	philosopher = (t_philo *)data;
 	while (check_last_time_eat(philosopher))
 		usleep(500);
-	while (!corpse_check((philosopher[0].data)))
+	while (1)
 	{
-		if (check_someone_died(&philosopher[i]) == 1 && !safi_chbe3o(philosopher))
+		if (check_someone_died(&philosopher[i]) == 1)
 		{
 			print('d', &philosopher[i]);
 			exit(1);

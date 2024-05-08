@@ -1,7 +1,7 @@
-SRC = main.c inisialiser.c check.c is_eating.c monitor.c check_bonus.c
+SRC = main.c inisialiser.c routine.c monitor.c check_bonus.c
 OBJ = ${SRC:.c=.o}
 
-CFLAGS = -fsanitize=thread -g3 #-fno-omit-frame-pointer #-Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -g3
 NAME = philo
 
 all : ${NAME}

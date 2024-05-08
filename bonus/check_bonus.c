@@ -6,7 +6,7 @@
 /*   By: cmaami <cmaami@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:22:46 by cmaami            #+#    #+#             */
-/*   Updated: 2024/05/07 14:25:31 by cmaami           ###   ########.fr       */
+/*   Updated: 2024/05/07 21:58:34 by cmaami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	safi_chbe3o(t_philo *philosopher)
 	i = 0;
 	while (i < philosopher[0].data->num_philosophers)
 	{
-		if (was_not_satisfied(philosopher[i]))
+		if (was_not_satisfied(&philosopher[i]))
 			return (0);
 		i++;
 	}
@@ -29,37 +29,52 @@ int	safi_chbe3o(t_philo *philosopher)
 int	check_last_time_eat(t_philo *philosopher)
 {
 	int	b;
+
 	sem_wait(philosopher->mutex_last_time_eat);
-	b = philosopher->last_time_eat == 0;
+	b = (philosopher->data->last_time_eat.tv_sec * 1000
+			+ philosopher->data->last_time_eat.tv_usec / 1000) == 0;
 	sem_post(philosopher->mutex_last_time_eat);
 	return (b);
 }
 
-int	check_someone_died(t_philo *philosopher)
+int	check_someone_died(t_philo *p)
 {
-	sem_wait(philosopher->mutex_last_time_eat);
-	if ((get_current_time() - philosopher->last_time_eat) > (unsigned long)philosopher->data->time_to_die)
-	{
-		sem_wait(philosopher->data->lock_wach_mat);
-		philosopher->data->wach_mat = 1;
-		sem_post(philosopher->data->lock_wach_mat);
-		sem_post(philosopher->mutex_last_time_eat);
+	size_t	time;
+
+	time = p->data->last_time_eat.tv_sec * 1000 + p->data->last_time_eat.tv_usec
+		/ 1000;
+	if ((get_current_time() - time) > (unsigned long)p->data->time_to_die)
 		return (1);
-	}
 	else
-	{
-		sem_post(philosopher->mutex_last_time_eat);
 		return (0);
-	}
-	sem_post(philosopher->mutex_last_time_eat);
 }
 
-int	was_not_satisfied(t_philo philo)
+int	was_not_satisfied(t_philo *philo)
 {
-	//looock
-	if (philo.data->number_of_times_each_philosopher_must_eat == -1)
+	if (philo->data->number_of_t_eat != -1
+		&& (philo->compt_n_o_t_eat < philo->data->number_of_t_eat))
 		return (1);
-	if (philo.compt_n_o_t_eat < philo.data->number_of_times_each_philosopher_must_eat)
+	return (0);
+}
+
+int	check_args(int c, char **v)
+{
+	int	i;
+	int	num;
+
+	num = 0;
+	i = 0;
+	v++;
+	if (c == 5 || c == 6)
+	{
+		while (i < c - 1)
+		{
+			num = ft_atoi(v[i]);
+			if (num <= 0 || num >= 2147483647)
+				return (0);
+			i++;
+		}
 		return (1);
-	exit (0);
+	}
+	return (0);
 }
