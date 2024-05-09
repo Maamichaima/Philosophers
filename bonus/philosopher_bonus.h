@@ -26,10 +26,10 @@
 typedef struct s_data
 {
 	int				num_philosophers;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				number_of_t_eat;
+	size_t				time_to_die;
+	size_t				time_to_eat;
+	size_t				time_to_sleep;
+	size_t				number_of_t_eat;
 	int				*pids;
 	int				wach_mat;
 	sem_t			*lock_wach_mat;

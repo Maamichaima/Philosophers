@@ -26,7 +26,7 @@ void	ft_usleep(size_t milliseconds, t_data *data)
 	size_t	start;
 
 	start = get_current_time();
-	while ((get_current_time() - start) < milliseconds && !corpse_check(data))
+	while ((get_current_time() - start) < milliseconds)// && !corpse_check(data))
 		usleep(500);
 }
 

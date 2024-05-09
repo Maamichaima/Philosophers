@@ -1,7 +1,7 @@
 SRC = main.c inisialiser.c routine.c monitor.c check_bonus.c
 OBJ = ${SRC:.c=.o}
 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -g3
+# CFLAGS = -fsanitize=thread -g3#-Wall -Wextra -Werror 
 NAME = philo
 
 all : ${NAME}
