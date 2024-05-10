@@ -68,6 +68,6 @@ int	main(int c, char **v)
 		return (0);
 	}
 	join_and_destroy(p, &data);
-	ft_free(p);
+	// ft_free(p);
 	return (0);
 }

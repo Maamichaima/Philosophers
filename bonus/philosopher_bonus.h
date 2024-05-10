@@ -22,6 +22,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+#include <fcntl.h>
 
 typedef struct s_data
 {
@@ -66,5 +67,6 @@ int					check_last_time_eat(t_philo *philosopher);
 int					check_someone_died(t_philo *philosopher);
 int					was_not_satisfied(t_philo *philo);
 void				thread_routine(t_philo *philosopher);
+void 				ft_free(t_philo *philo);
 
 #endif

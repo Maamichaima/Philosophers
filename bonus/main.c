@@ -92,4 +92,5 @@ int	main(int c, char **v)
 	data = inisialiser_data(v, c);
 	p = inisialiser(&data);
 	create_process(&data, p);
+	ft_free(p);
 }
