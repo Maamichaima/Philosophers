@@ -31,9 +31,9 @@ int	ft_usleep(size_t milliseconds, t_data *data)
 	return (0);
 }
 
-void join_and_destroy(t_philo *p, t_data *data)
+void	join_and_destroy(t_philo *p, t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < data->num_philosophers)

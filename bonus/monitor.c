@@ -12,30 +12,6 @@
 
 #include "philosopher_bonus.h"
 
-// int	w9ef(t_philo *philosopher)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (i < philosopher[0].data->num_philosophers)
-// 	{
-// 		if (check_last_time_eat(&philosopher[i]))
-// 			return (0);
-// 		i++;
-// 	}
-// 	return (1);
-// }
-
-// int	corpse_check(t_data *data)
-// {
-// 	int	b;
-
-// 	sem_wait(data->lock_wach_mat);
-// 	b = (data->wach_mat == 1);
-// 	sem_post(data->lock_wach_mat);
-// 	return (b);
-// }
-
 void	*monitor(void *data)
 {
 	t_philo	*philosopher;

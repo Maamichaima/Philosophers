@@ -22,10 +22,10 @@
 typedef struct s_data
 {
 	int				num_philosophers;
-	int				time_to_die;
+	size_t			time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				number_of_times_each_philosopher_must_eat;
+	int				number_of_t_eat;
 	pthread_mutex_t	*forks;
 	int				wach_mat;
 	pthread_mutex_t	lock_wach_mat;
@@ -42,6 +42,7 @@ typedef struct s_philo
 	pthread_mutex_t	mutex_last_time_eat;
 	size_t			last_time_eat;
 	int				compt_n_o_t_eat;
+	pthread_mutex_t	mutex_compt_n_o_t_eat;
 	t_data			*data;
 }					t_philo;
 
@@ -53,7 +54,7 @@ void				is_thinking(t_philo *philo);
 void				*thread_routine(void *data);
 int					corpse_check(t_data *data);
 void				print(char c, t_philo *philosopher);
-int					was_not_satisfied(t_philo philo);
+int					was_not_satisfied(t_philo *philo);
 t_philo				*inisialiser_chaque_philo(t_data *data);
 t_data				inisialiser_data(char **v, int c);
 int					check_someone_died(t_philo *philosopher);

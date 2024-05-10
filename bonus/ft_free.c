@@ -12,11 +12,11 @@
 
 #include "philosopher_bonus.h"
 
-void ft_free(t_philo *philo)
+void	ft_free(t_philo *philo)
 {
-    if(philo->data->pids)
-    {
-        free(philo->data->pids);
-        free(philo);
-    }
+	if (philo->data->pids)
+	{
+		free(philo->data->pids);
+		free(philo);
+	}
 }

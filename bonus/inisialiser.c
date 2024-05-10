@@ -24,9 +24,10 @@ t_data	inisialiser_data(char **v, int c)
 		data.number_of_t_eat = ft_atoi(v[5]);
 	else
 		data.number_of_t_eat = -1;
+	sem_unlink("print");
+	sem_unlink("mutex_last_time_eat");
+	sem_unlink("forks");
 	data.pids = malloc(sizeof(pid_t) * data.num_philosophers);
-	data.wach_mat = 0;
-	data.lock_wach_mat = sem_open("lock_wach_mat", O_CREAT, 0644, 1);
 	data.forks = sem_open("forks", O_CREAT, 0666, data.num_philosophers);
 	data.print = sem_open("print", O_CREAT, 0666, 1);
 	return (data);
@@ -45,7 +46,6 @@ t_philo	*inisialiser(t_data *data)
 	{
 		p[i].data = data;
 		p[i].index = i + 1;
-		p[i].lock_compt_n_o_t_eat = sem_open("lock_compt_n_o_t_eat", O_CREAT, 0666, 1);
 		p[i].compt_n_o_t_eat = 0;
 		gettimeofday(&data->last_time_eat, NULL);
 		i++;

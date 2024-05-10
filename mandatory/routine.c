@@ -53,7 +53,7 @@ void	*thread_routine(void *data)
 	pthread_mutex_unlock(&philosopher->mutex_last_time_eat);
 	if (philosopher->index % 2 == 0)
 		ft_usleep(60, (philosopher->data));
-	while (!corpse_check(philosopher->data) && was_not_satisfied(*philosopher))
+	while (!corpse_check(philosopher->data) && was_not_satisfied(philosopher))
 	{
 		is_eating(philosopher);
 		is_sleeping(philosopher);
@@ -71,7 +71,7 @@ void	*routine_one_philo(void *data)
 	pthread_mutex_lock(philo->right);
 	printf("%zu %d has taken a fork \n", get_current_time() - philo->data->daba,
 		philo->index);
-	ft_usleep(philo->data->time_to_die, (philo->data)); // time to eat
+	ft_usleep(philo->data->time_to_die, (philo->data));
 	pthread_mutex_unlock(philo->right);
 	printf("\e[31m%zu %d died\e[0m \n", get_current_time() - philo->data->daba,
 		philo->index);

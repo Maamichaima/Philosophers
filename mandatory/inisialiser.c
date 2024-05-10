@@ -71,9 +71,9 @@ t_data	inisialiser_data(char **v, int c)
 	data.time_to_eat = ft_atoi(v[3]);
 	data.time_to_sleep = ft_atoi(v[4]);
 	if (c == 6)
-		data.number_of_times_each_philosopher_must_eat = ft_atoi(v[5]);
+		data.number_of_t_eat = ft_atoi(v[5]);
 	else
-		data.number_of_times_each_philosopher_must_eat = -1;
+		data.number_of_t_eat = -1;
 	data.forks = malloc(sizeof(pthread_mutex_t) * data.num_philosophers);
 	data.wach_mat = 0;
 	pthread_mutex_init(&data.lock_wach_mat, NULL);

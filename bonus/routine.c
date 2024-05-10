@@ -25,11 +25,8 @@ void	print(char c, t_philo *philosopher)
 		printf("%zu %d has taken a fork \n", get_current_time()
 			- philosopher->data->daba, philosopher->index);
 	else if (c == 'e')
-	{
 		printf("\e[32m%zu %d is eating\e[0m \n", get_current_time()
 			- philosopher->data->daba, philosopher->index);
-		// gettimeofday(&philosopher->data->last_time_eat, NULL);
-	}
 	else if (c == 'd')
 	{
 		printf("\e[31m%zu %d died\e[0m \n", get_current_time()
@@ -47,8 +44,10 @@ void	is_eating(t_philo *philosopher)
 	print('f', philosopher);
 	print('e', philosopher);
 	gettimeofday(&philosopher->data->last_time_eat, NULL);
-	philosopher->compt_n_o_t_eat++; // mutex
-	ft_usleep(philosopher->data->time_to_eat, (philosopher->data));
+	// sem_wait(philosopher->lock_compt_n_o_t_eat);
+	philosopher->compt_n_o_t_eat++;
+	// sem_post(philosopher->lock_compt_n_o_t_eat);
+	ft_usleep(philosopher->data->time_to_eat);
 	sem_post(philosopher->data->forks);
 	sem_post(philosopher->data->forks);
 }
@@ -61,19 +60,24 @@ void	is_thinking(t_philo *philo)
 void	is_sleeping(t_philo *philo)
 {
 	print('s', philo);
-	ft_usleep(philo->data->time_to_sleep, (philo->data));
+	ft_usleep(philo->data->time_to_sleep);
 }
 
 void	thread_routine(t_philo *philo)
 {
 	if (philo->index % 2 == 0)
-		ft_usleep(60, (philo->data));
-	while (1)//!(philo->data->number_of_t_eat != -1 && (philo->compt_n_o_t_eat == philo->data->number_of_t_eat)))
+		ft_usleep(60);
+	while (1)
 	{
 		is_eating(philo);
+		// sem_wait(philo->lock_compt_n_o_t_eat);
 		if (philo->data->number_of_t_eat != -1
 			&& (philo->compt_n_o_t_eat == philo->data->number_of_t_eat))
+		{
+			// sem_post(philo->lock_compt_n_o_t_eat);
 			exit(0);
+		}
+		// sem_post(philo->lock_compt_n_o_t_eat);
 		is_sleeping(philo);
 		is_thinking(philo);
 	}

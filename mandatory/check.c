@@ -19,7 +19,7 @@ int	safi_chbe3o(t_philo *philosopher)
 	i = 0;
 	while (i < philosopher[0].data->num_philosophers)
 	{
-		if (was_not_satisfied(philosopher[i]))
+		if (was_not_satisfied(&philosopher[i]))
 			return (0);
 		i++;
 	}
@@ -46,7 +46,7 @@ int	check_someone_died(t_philo *philosopher)
 {
 	pthread_mutex_lock(&philosopher->mutex_last_time_eat);
 	if ((get_current_time()
-			- philosopher->last_time_eat) > (unsigned long)philosopher->data->time_to_die)
+			- philosopher->last_time_eat) > philosopher->data->time_to_die)
 	{
 		pthread_mutex_lock(&philosopher->data->lock_wach_mat);
 		philosopher->data->wach_mat = 1;
@@ -62,13 +62,16 @@ int	check_someone_died(t_philo *philosopher)
 	pthread_mutex_unlock(&philosopher->mutex_last_time_eat);
 }
 
-int	was_not_satisfied(t_philo philo)
+int	was_not_satisfied(t_philo *philo)
 {
-	// looock
-	if (philo.data->number_of_times_each_philosopher_must_eat == -1)
+	pthread_mutex_lock(&philo->mutex_compt_n_o_t_eat);
+	if (philo->data->number_of_t_eat == -1
+		|| philo->compt_n_o_t_eat < philo->data->number_of_t_eat)
+	{
+		pthread_mutex_unlock(&philo->mutex_compt_n_o_t_eat);
 		return (1);
-	if (philo.compt_n_o_t_eat < philo.data->number_of_times_each_philosopher_must_eat)
-		return (1);
+	}
+	pthread_mutex_unlock(&philo->mutex_compt_n_o_t_eat);
 	return (0);
 }
 
