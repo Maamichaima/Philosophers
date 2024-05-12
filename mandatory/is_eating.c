@@ -21,7 +21,7 @@ void	is_eating(t_philo *philosopher)
 	print('e', philosopher);
 	pthread_mutex_lock(&philosopher->mutex_compt_n_o_t_eat);
 	philosopher->compt_n_o_t_eat++;
-	pthread_mutex_lock(&philosopher->mutex_compt_n_o_t_eat);
+	pthread_mutex_unlock(&philosopher->mutex_compt_n_o_t_eat);
 	pthread_mutex_lock(&philosopher->mutex_last_time_eat);
 	philosopher->last_time_eat = get_current_time();
 	pthread_mutex_unlock(&philosopher->mutex_last_time_eat);

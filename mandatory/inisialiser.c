@@ -55,6 +55,7 @@ t_philo	*inisialiser_chaque_philo(t_data *data)
 		p[i].right = &data->forks[i];
 		p[i].left = &data->forks[(i + 1) % data->num_philosophers];
 		pthread_mutex_init(&p[i].mutex_last_time_eat, NULL);
+		pthread_mutex_init(&p[i].mutex_compt_n_o_t_eat, NULL);
 		p[i].compt_n_o_t_eat = 0;
 		p[i].last_time_eat = 0;
 		i++;

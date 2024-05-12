@@ -60,6 +60,8 @@ void	create_process(t_data *data, t_philo *philo)
 		}
 		i++;
 	}
+	// sem_close(data->print);
+	// sem_close(data->forks);
 	wait_and_kill(data);
 }
 

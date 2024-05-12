@@ -44,9 +44,7 @@ void	is_eating(t_philo *philosopher)
 	print('f', philosopher);
 	print('e', philosopher);
 	gettimeofday(&philosopher->data->last_time_eat, NULL);
-	// sem_wait(philosopher->lock_compt_n_o_t_eat);
 	philosopher->compt_n_o_t_eat++;
-	// sem_post(philosopher->lock_compt_n_o_t_eat);
 	ft_usleep(philosopher->data->time_to_eat);
 	sem_post(philosopher->data->forks);
 	sem_post(philosopher->data->forks);
@@ -70,14 +68,9 @@ void	thread_routine(t_philo *philo)
 	while (1)
 	{
 		is_eating(philo);
-		// sem_wait(philo->lock_compt_n_o_t_eat);
 		if (philo->data->number_of_t_eat != -1
 			&& (philo->compt_n_o_t_eat == philo->data->number_of_t_eat))
-		{
-			// sem_post(philo->lock_compt_n_o_t_eat);
 			exit(0);
-		}
-		// sem_post(philo->lock_compt_n_o_t_eat);
 		is_sleeping(philo);
 		is_thinking(philo);
 	}

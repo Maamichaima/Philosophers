@@ -23,6 +23,43 @@ int	check_someone_died(t_philo *philo)
 	return (0);
 }
 
+int	ft_isdigit(int c)
+{
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
+}
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
+}
+
+int	is_int(char *argv)
+{
+	int	i;
+
+	i = 0;
+	while (argv[i] && (argv[i] == '+' || argv[i] == '-'))
+		i++;
+	while (argv[i] && argv[i] == '0')
+		i++;
+	if (ft_strlen(argv + i) > 11)
+		return (0);
+	while (argv[i])
+	{
+		if (!ft_isdigit(argv[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	check_args(int c, char **v)
 {
 	int	i;
@@ -35,6 +72,8 @@ int	check_args(int c, char **v)
 	{
 		while (i < c - 1)
 		{
+			if (!is_int(v[i]))
+				return (0);
 			num = ft_atoi(v[i]);
 			if (num <= 0 || num >= 2147483647)
 				return (0);

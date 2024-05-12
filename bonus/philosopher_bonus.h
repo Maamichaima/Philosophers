@@ -42,7 +42,6 @@ typedef struct s_philo
 {
 	int				index;
 	pthread_t		id;
-	sem_t			*mutex_last_time_eat;
 	int				compt_n_o_t_eat;
 	t_data			*data;
 }					t_philo;
