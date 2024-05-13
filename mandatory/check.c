@@ -74,6 +74,7 @@ int	was_not_satisfied(t_philo *philo)
 	pthread_mutex_unlock(&philo->mutex_compt_n_o_t_eat);
 	return (0);
 }
+
 int	ft_isdigit(int c)
 {
 	if (c >= '0' && c <= '9')
@@ -96,8 +97,10 @@ int	is_int(char *argv)
 	int	i;
 
 	i = 0;
-	while (argv[i] && (argv[i] == '+' || argv[i] == '-'))
+	if(argv[i] && (argv[i] == '+' || argv[i] == '-'))
 		i++;
+	if (!argv[i])
+		return (0);
 	while (argv[i] && argv[i] == '0')
 		i++;
 	if (ft_strlen(argv + i) > 11)
@@ -126,7 +129,7 @@ int	check_args(int c, char **v)
 			if (!is_int(v[i]))
 				return (0);
 			num = ft_atoi(v[i]);
-			if (num <= 0 || num >= 2147483647)
+			if (num < 0 || num >= 2147483647)
 				return (0);
 			i++;
 		}
