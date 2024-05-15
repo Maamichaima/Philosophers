@@ -47,5 +47,6 @@ void	monitor(t_philo *philosopher)
 			i++;
 		}
 		i = 0;
+		usleep(500);
 	}
 }

@@ -55,13 +55,13 @@ void	create_process(t_data *data, t_philo *philo)
 		{
 			pthread_create(&philo[i].id, NULL, monitor, &philo[i]);
 			routine(&philo[i]);
-			pthread_join(philo[i].id, NULL);
-			exit(0);
+			pthread_join(philo[i].id, NULL); // free in child
 		}
 		i++;
 	}
-	// sem_close(data->print);
-	// sem_close(data->forks);
+	sem_close(data->print);
+	sem_close(data->forks);
+	sem_close(data->sem_last_time_eat);
 	wait_and_kill(data);
 }
 
@@ -69,8 +69,7 @@ size_t	get_current_time(void)
 {
 	struct timeval	time;
 
-	if (gettimeofday(&time, NULL) == -1)
-		write(2, "gettimeofday() error\n", 22);
+	gettimeofday(&time, NULL);
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 

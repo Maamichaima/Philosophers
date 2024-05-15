@@ -47,8 +47,12 @@ int	is_int(char *argv)
 	int	i;
 
 	i = 0;
-	while (argv[i] && (argv[i] == '+' || argv[i] == '-'))
+	while (argv[i] && (argv[i] == '\t' || argv[i] == ' ' || argv[i] == '\n'))
 		i++;
+	if (argv[i] && (argv[i] == '+' || argv[i] == '-'))
+		i++;
+	if (!argv[i])
+		return (0);
 	while (argv[i] && argv[i] == '0')
 		i++;
 	if (ft_strlen(argv + i) > 11)

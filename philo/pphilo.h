@@ -56,7 +56,7 @@ int					corpse_check(t_data *data);
 void				print(char c, t_philo *philosopher);
 int					was_not_satisfied(t_philo *philo);
 t_philo				*inisialiser_chaque_philo(t_data *data);
-t_data				inisialiser_data(char **v, int c);
+void				inisialiser_data(t_data *data, char **v, int c);
 int					check_someone_died(t_philo *philosopher);
 int					check_last_time_eat(t_philo *philosopher);
 int					all_satisfied(t_philo *philosopher);

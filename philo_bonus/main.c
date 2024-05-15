@@ -27,4 +27,5 @@ int	main(int c, char **v)
 	p = inisialiser(&data);
 	create_process(&data, p);
 	ft_free(p);
+	return (0);
 }

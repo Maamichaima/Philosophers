@@ -34,6 +34,8 @@ int	is_int(char *argv)
 	int	i;
 
 	i = 0;
+	while (argv[i] && (argv[i] == '\t' || argv[i] == ' ' || argv[i] == '\n'))
+		i++;
 	if (argv[i] && (argv[i] == '+' || argv[i] == '-'))
 		i++;
 	if (!argv[i])

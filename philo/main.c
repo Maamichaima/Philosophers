@@ -69,7 +69,6 @@ int	main(int c, char **v)
 	if (data.number_of_t_eat == 0 || data.num_philosophers == 0)
 	{
 		// free
-		system("leaks philo");
 		return (0);
 	}
 	if (create_threads(p, data))

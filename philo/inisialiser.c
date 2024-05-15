@@ -63,25 +63,22 @@ t_philo	*inisialiser_chaque_philo(t_data *data)
 	return (p);
 }
 
-t_data	inisialiser_data(char **v, int c)
+void	inisialiser_data(t_data *data, char **v, int c)
 {
-	t_data	data;
-
-	data.num_philosophers = ft_atoi(v[1]);
-	data.time_to_die = ft_atoi(v[2]);
-	data.time_to_eat = ft_atoi(v[3]);
-	data.time_to_sleep = ft_atoi(v[4]);
+	data->num_philosophers = ft_atoi(v[1]);
+	data->time_to_die = ft_atoi(v[2]);
+	data->time_to_eat = ft_atoi(v[3]);
+	data->time_to_sleep = ft_atoi(v[4]);
 	if (c == 6)
-		data.number_of_t_eat = ft_atoi(v[5]);
+		data->number_of_t_eat = ft_atoi(v[5]);
 	else
-		data.number_of_t_eat = -1;
-	data.forks = malloc(sizeof(pthread_mutex_t) * data.num_philosophers);
-	// if(!data.forks)
-	// 	return (0);
-	data.is_died = 0;
-	pthread_mutex_init(&data.lock_is_died, NULL);
-	pthread_mutex_init(&data.print, NULL);
-	return (data);
+		data->number_of_t_eat = -1;
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_philosophers);
+	if (!data->forks)
+		return ;
+	data->is_died = 0;
+	pthread_mutex_init(&data->lock_is_died, NULL);
+	pthread_mutex_init(&data->print, NULL);
 }
 
 t_philo	*init_program(t_data *data, char **v, int c)
@@ -90,7 +87,7 @@ t_philo	*init_program(t_data *data, char **v, int c)
 	int		i;
 
 	i = 0;
-	*data = inisialiser_data(v, c);
+	inisialiser_data(data, v, c);
 	while (i < data->num_philosophers)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);
