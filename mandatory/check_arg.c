@@ -1,29 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_bonus.c                                      :+:      :+:    :+:   */
+/*   check_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmaami <cmaami@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cmaami <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/28 16:22:46 by cmaami            #+#    #+#             */
-/*   Updated: 2024/05/07 21:58:34 by cmaami           ###   ########.fr       */
+/*   Created: 2024/05/14 18:31:34 by cmaami            #+#    #+#             */
+/*   Updated: 2024/05/14 18:31:38 by cmaami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosopher_bonus.h"
-
-int	check_someone_died(t_philo *philo)
-{
-	size_t	time_stamp;
-
-	sem_wait(philo->data->sem_last_time_eat);
-	time_stamp = get_current_time() - ((philo->data->last_time_eat.tv_sec
-				* 1000) + (philo->data->last_time_eat.tv_usec / 1000));
-	sem_post(philo->data->sem_last_time_eat);
-	if (time_stamp > philo->data->time_to_die)
-		return (1);
-	return (0);
-}
+#include "pphilo.h"
 
 int	ft_isdigit(int c)
 {
@@ -47,8 +34,10 @@ int	is_int(char *argv)
 	int	i;
 
 	i = 0;
-	while (argv[i] && (argv[i] == '+' || argv[i] == '-'))
+	if (argv[i] && (argv[i] == '+' || argv[i] == '-'))
 		i++;
+	if (!argv[i])
+		return (0);
 	while (argv[i] && argv[i] == '0')
 		i++;
 	if (ft_strlen(argv + i) > 11)

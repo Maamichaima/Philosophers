@@ -12,25 +12,26 @@
 
 #include "philosopher_bonus.h"
 
-t_data	inisialiser_data(char **v, int c)
+int	inisialiser_data(t_data *data, char **v, int c)
 {
-	t_data	data;
-
-	data.num_philosophers = ft_atoi(v[1]);
-	data.time_to_die = ft_atoi(v[2]);
-	data.time_to_eat = ft_atoi(v[3]);
-	data.time_to_sleep = ft_atoi(v[4]);
+	data->num_philosophers = ft_atoi(v[1]);
+	data->time_to_die = ft_atoi(v[2]);
+	data->time_to_eat = ft_atoi(v[3]);
+	data->time_to_sleep = ft_atoi(v[4]);
 	if (c == 6)
-		data.number_of_t_eat = ft_atoi(v[5]);
+		data->number_of_t_eat = ft_atoi(v[5]);
 	else
-		data.number_of_t_eat = -1;
+		data->number_of_t_eat = -1;
+	if (data->num_philosophers == 0 || data->number_of_t_eat == 0)
+		return (0);
 	sem_unlink("print");
-	sem_unlink("mutex_last_time_eat");
+	sem_unlink("sem_last_time_eat");
 	sem_unlink("forks");
-	data.pids = malloc(sizeof(pid_t) * data.num_philosophers);
-	data.forks = sem_open("forks", O_CREAT, 0666, data.num_philosophers);
-	data.print = sem_open("print", O_CREAT, 0666, 1);
-	return (data);
+	data->pids = malloc(sizeof(pid_t) * data->num_philosophers);
+	data->forks = sem_open("forks", O_CREAT, 0666, data->num_philosophers);
+	data->print = sem_open("print", O_CREAT, 0666, 1);
+	data->sem_last_time_eat = sem_open("sem_last_time_eat", O_CREAT, 0666, 1);
+	return (1);
 }
 
 t_philo	*inisialiser(t_data *data)

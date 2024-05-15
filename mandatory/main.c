@@ -45,8 +45,12 @@ void	join_and_destroy(t_philo *p, t_data *data)
 	while (i < data->num_philosophers)
 	{
 		pthread_mutex_destroy(&data->forks[i]);
+		pthread_mutex_destroy(&p[i].mutex_compt_n_o_t_eat);
+		pthread_mutex_destroy(&p[i].mutex_last_time_eat);
 		i++;
 	}
+	pthread_mutex_destroy(&data->print);
+	pthread_mutex_destroy(&data->lock_is_died);
 }
 
 int	main(int c, char **v)
@@ -62,6 +66,12 @@ int	main(int c, char **v)
 		return (0);
 	}
 	p = init_program(&data, v, c);
+	if (data.number_of_t_eat == 0 || data.num_philosophers == 0)
+	{
+		// free
+		system("leaks philo");
+		return (0);
+	}
 	if (create_threads(p, data))
 	{
 		ft_free(p);

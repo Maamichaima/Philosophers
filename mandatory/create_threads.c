@@ -26,7 +26,7 @@ int	create_threads(t_philo *p, t_data data)
 	else
 	{
 		i = 0;
-		p->data->daba = get_current_time();
+		p->data->now = get_current_time();
 		while (i < data.num_philosophers)
 		{
 			pthread_create(&(p[i].id), NULL, thread_routine, &(p[i]));

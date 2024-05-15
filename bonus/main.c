@@ -22,7 +22,8 @@ int	main(int c, char **v)
 		printf("invalide argument\n");
 		return (0);
 	}
-	data = inisialiser_data(v, c);
+	if (inisialiser_data(&data, v, c) == 0)
+		return (0);
 	p = inisialiser(&data);
 	create_process(&data, p);
 	ft_free(p);

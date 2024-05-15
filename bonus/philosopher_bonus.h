@@ -35,6 +35,7 @@ typedef struct s_data
 	sem_t			*forks;
 	size_t			daba;
 	sem_t			*print;
+	sem_t			*sem_last_time_eat;
 	struct timeval	last_time_eat;
 }					t_data;
 
@@ -47,7 +48,7 @@ typedef struct s_philo
 }					t_philo;
 
 t_philo				*inisialiser(t_data *data);
-t_data				inisialiser_data(char **v, int c);
+int					inisialiser_data(t_data *data, char **v, int c);
 int					check_args(int c, char **v);
 int					ft_atoi(char *str);
 void				is_eating(t_philo *philosopher);
@@ -56,7 +57,7 @@ void				ft_usleep(size_t milliseconds);
 void				*monitor(void *data);
 void				print(char c, t_philo *philosopher);
 int					check_someone_died(t_philo *philosopher);
-void				thread_routine(t_philo *philosopher);
+void				routine(t_philo *philosopher);
 void				ft_free(t_philo *philo);
 void				create_process(t_data *data, t_philo *philo);
 

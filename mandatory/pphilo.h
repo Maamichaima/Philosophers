@@ -27,9 +27,9 @@ typedef struct s_data
 	int				time_to_sleep;
 	int				number_of_t_eat;
 	pthread_mutex_t	*forks;
-	int				wach_mat;
-	pthread_mutex_t	lock_wach_mat;
-	size_t			daba;
+	int				is_died;
+	pthread_mutex_t	lock_is_died;
+	size_t			now;
 	pthread_mutex_t	print;
 }					t_data;
 
@@ -59,7 +59,7 @@ t_philo				*inisialiser_chaque_philo(t_data *data);
 t_data				inisialiser_data(char **v, int c);
 int					check_someone_died(t_philo *philosopher);
 int					check_last_time_eat(t_philo *philosopher);
-int					safi_chbe3o(t_philo *philosopher);
+int					all_satisfied(t_philo *philosopher);
 void				monitor(t_philo *philosopher);
 int					ft_atoi(char *str);
 void				ft_free(t_philo *philosopher);

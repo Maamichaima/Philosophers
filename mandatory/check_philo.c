@@ -12,7 +12,7 @@
 
 #include "pphilo.h"
 
-int	safi_chbe3o(t_philo *philosopher)
+int	all_satisfied(t_philo *philosopher)
 {
 	int	i;
 
@@ -48,9 +48,9 @@ int	check_someone_died(t_philo *philosopher)
 	if ((get_current_time()
 			- philosopher->last_time_eat) > philosopher->data->time_to_die)
 	{
-		pthread_mutex_lock(&philosopher->data->lock_wach_mat);
-		philosopher->data->wach_mat = 1;
-		pthread_mutex_unlock(&philosopher->data->lock_wach_mat);
+		pthread_mutex_lock(&philosopher->data->lock_is_died);
+		philosopher->data->is_died = 1;
+		pthread_mutex_unlock(&philosopher->data->lock_is_died);
 		pthread_mutex_unlock(&philosopher->mutex_last_time_eat);
 		return (1);
 	}
@@ -74,87 +74,3 @@ int	was_not_satisfied(t_philo *philo)
 	pthread_mutex_unlock(&philo->mutex_compt_n_o_t_eat);
 	return (0);
 }
-
-int	ft_isdigit(int c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
-}
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i] != '\0')
-		i++;
-	return (i);
-}
-
-int	is_int(char *argv)
-{
-	int	i;
-
-	i = 0;
-	if(argv[i] && (argv[i] == '+' || argv[i] == '-'))
-		i++;
-	if (!argv[i])
-		return (0);
-	while (argv[i] && argv[i] == '0')
-		i++;
-	if (ft_strlen(argv + i) > 11)
-		return (0);
-	while (argv[i])
-	{
-		if (!ft_isdigit(argv[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int	check_args(int c, char **v)
-{
-	int	i;
-	int	num;
-
-	num = 0;
-	i = 0;
-	v++;
-	if (c == 5 || c == 6)
-	{
-		while (i < c - 1)
-		{
-			if (!is_int(v[i]))
-				return (0);
-			num = ft_atoi(v[i]);
-			if (num < 0 || num >= 2147483647)
-				return (0);
-			i++;
-		}
-		return (1);
-	}
-	return (0);
-}
-// int	check_args(int c, char **v)
-// {
-// 	int	i;
-// 	int	num;
-
-// 	num = 0;
-// 	i = 0;
-// 	v++;
-// 	if (c == 5 || c == 6)
-// 	{
-// 		while (i < c - 1)
-// 		{
-// 			num = ft_atoi(v[i]);
-// 			if (num <= 0 || num >= 2147483647)
-// 				return (0);
-// 			i++;
-// 		}
-// 		return (1);
-// 	}
-// 	return (0);
-// }

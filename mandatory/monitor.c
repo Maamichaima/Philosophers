@@ -12,7 +12,7 @@
 
 #include "pphilo.h"
 
-int	w9ef(t_philo *philosopher)
+int	stop(t_philo *philosopher)
 {
 	int	i;
 
@@ -31,14 +31,14 @@ void	monitor(t_philo *philosopher)
 	int	i;
 
 	i = 0;
-	while (!w9ef(philosopher))
+	while (!stop(philosopher))
 		usleep(500);
 	while (!corpse_check((philosopher[0].data)))
 	{
 		while (i < philosopher[0].data->num_philosophers)
 		{
 			if (check_someone_died(&philosopher[i]) == 1
-				&& !safi_chbe3o(philosopher))
+				&& !all_satisfied(philosopher))
 			{
 				print('d', &philosopher[i]);
 				i = 0;

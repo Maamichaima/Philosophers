@@ -76,8 +76,10 @@ t_data	inisialiser_data(char **v, int c)
 	else
 		data.number_of_t_eat = -1;
 	data.forks = malloc(sizeof(pthread_mutex_t) * data.num_philosophers);
-	data.wach_mat = 0;
-	pthread_mutex_init(&data.lock_wach_mat, NULL);
+	// if(!data.forks)
+	// 	return (0);
+	data.is_died = 0;
+	pthread_mutex_init(&data.lock_is_died, NULL);
 	pthread_mutex_init(&data.print, NULL);
 	return (data);
 }

@@ -54,7 +54,7 @@ void	create_process(t_data *data, t_philo *philo)
 		if (data->pids[i] == 0)
 		{
 			pthread_create(&philo[i].id, NULL, monitor, &philo[i]);
-			thread_routine(&philo[i]);
+			routine(&philo[i]);
 			pthread_join(philo[i].id, NULL);
 			exit(0);
 		}

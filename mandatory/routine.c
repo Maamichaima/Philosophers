@@ -17,19 +17,19 @@ void	print(char c, t_philo *philosopher)
 	pthread_mutex_lock(&philosopher->data->print);
 	if (c == 't' && !corpse_check(philosopher->data))
 		printf("\e[35m%zu %d is thinking\e[0m\n", get_current_time()
-			- philosopher->data->daba, philosopher->index);
+			- philosopher->data->now, philosopher->index);
 	else if (c == 's' && !corpse_check(philosopher->data))
 		printf("\e[33m%zu %d is sleeping\e[0m\n", get_current_time()
-			- philosopher->data->daba, philosopher->index);
+			- philosopher->data->now, philosopher->index);
 	else if (c == 'f' && !corpse_check(philosopher->data))
 		printf("%zu %d has taken a fork \n", get_current_time()
-			- philosopher->data->daba, philosopher->index);
+			- philosopher->data->now, philosopher->index);
 	else if (c == 'e' && !corpse_check(philosopher->data))
 		printf("\e[32m%zu %d is eating\e[0m \n", get_current_time()
-			- philosopher->data->daba, philosopher->index);
+			- philosopher->data->now, philosopher->index);
 	else if (c == 'd')
 		printf("\e[31m%zu %d died\e[0m \n", get_current_time()
-			- philosopher->data->daba, philosopher->index);
+			- philosopher->data->now, philosopher->index);
 	pthread_mutex_unlock(&philosopher->data->print);
 }
 
@@ -37,9 +37,9 @@ int	corpse_check(t_data *data)
 {
 	int	b;
 
-	pthread_mutex_lock(&data->lock_wach_mat);
-	b = (data->wach_mat == 1);
-	pthread_mutex_unlock(&data->lock_wach_mat);
+	pthread_mutex_lock(&data->lock_is_died);
+	b = (data->is_died == 1);
+	pthread_mutex_unlock(&data->lock_is_died);
 	return (b);
 }
 
@@ -67,13 +67,13 @@ void	*routine_one_philo(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
-	philo->data->daba = get_current_time();
+	philo->data->now = get_current_time();
 	pthread_mutex_lock(philo->right);
-	printf("%zu %d has taken a fork \n", get_current_time() - philo->data->daba,
+	printf("%zu %d has taken a fork \n", get_current_time() - philo->data->now,
 		philo->index);
 	ft_usleep(philo->data->time_to_die, (philo->data));
 	pthread_mutex_unlock(philo->right);
-	printf("\e[31m%zu %d died\e[0m \n", get_current_time() - philo->data->daba,
+	printf("\e[31m%zu %d died\e[0m \n", get_current_time() - philo->data->now,
 		philo->index);
 	return (NULL);
 }
