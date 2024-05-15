@@ -55,7 +55,7 @@ void	create_process(t_data *data, t_philo *philo)
 		{
 			pthread_create(&philo[i].id, NULL, monitor, &philo[i]);
 			routine(&philo[i]);
-			pthread_join(philo[i].id, NULL); // free in child
+			pthread_join(philo[i].id, NULL);
 		}
 		i++;
 	}
