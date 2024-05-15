@@ -22,7 +22,6 @@ void	*monitor(void *data)
 		if (check_someone_died(philosopher) == 1)
 		{
 			print('d', philosopher);
-			ft_free(philosopher);
 			exit(1);
 		}
 		usleep(500);

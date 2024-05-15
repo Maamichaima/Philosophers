@@ -28,7 +28,7 @@ int	inisialiser_data(t_data *data, char **v, int c)
 	sem_unlink("sem_last_time_eat");
 	sem_unlink("forks");
 	data->pids = malloc(sizeof(pid_t) * data->num_philosophers);
-	data->forks = sem_open("forks", O_CREAT, 0666, data->num_philosophers); // sem_max
+	data->forks = sem_open("forks", O_CREAT, 0666, data->num_philosophers);//mx
 	data->print = sem_open("print", O_CREAT, 0666, 1);
 	data->sem_last_time_eat = sem_open("sem_last_time_eat", O_CREAT, 0666, 1);
 	return (1);
