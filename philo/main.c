@@ -56,10 +56,8 @@ void	join_and_destroy(t_philo *p, t_data *data)
 int	main(int c, char **v)
 {
 	t_philo	*p;
-	int		i;
 	t_data	data;
 
-	i = 0;
 	if (!check_args(c, v))
 	{
 		printf("invalide argument\n");
@@ -68,7 +66,6 @@ int	main(int c, char **v)
 	p = init_program(&data, v, c);
 	if (data.number_of_t_eat == 0 || data.num_philosophers == 0)
 	{
-		// free
 		return (0);
 	}
 	if (create_threads(p, data))
@@ -77,6 +74,6 @@ int	main(int c, char **v)
 		return (0);
 	}
 	join_and_destroy(p, &data);
-	// ft_free(p);
+	ft_free(p);
 	return (0);
 }

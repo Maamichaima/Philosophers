@@ -73,6 +73,8 @@ void	inisialiser_data(t_data *data, char **v, int c)
 		data->number_of_t_eat = ft_atoi(v[5]);
 	else
 		data->number_of_t_eat = -1;
+	if(data->num_philosophers == 0)
+		return ;
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_philosophers);
 	if (!data->forks)
 		return ;
@@ -87,12 +89,14 @@ t_philo	*init_program(t_data *data, char **v, int c)
 	int		i;
 
 	i = 0;
+	p = NULL;
 	inisialiser_data(data, v, c);
 	while (i < data->num_philosophers)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);
 		i++;
 	}
-	p = inisialiser_chaque_philo(data);
+	if(data->num_philosophers != 0)
+		p = inisialiser_chaque_philo(data);
 	return (p);
 }
